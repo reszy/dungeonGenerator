@@ -86,7 +86,7 @@ namespace DungeonGenerator.Generator
             }
         }
 
-        public Tile getTile(int x, int y)
+        public Tile GetTile(int x, int y)
         {
             try
             {

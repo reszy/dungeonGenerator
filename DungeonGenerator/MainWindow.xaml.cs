@@ -97,7 +97,7 @@ namespace DungeonGenerator
 
             if (mapGenerator != null)
             {
-                Tile tile = mapGenerator.getTile(pos.X, pos.Y);
+                Tile tile = mapGenerator.GetTile(pos.X, pos.Y);
                 if (tile != null)
                 {
                     coordsLabel.Content += "\n" + tile.Id;
