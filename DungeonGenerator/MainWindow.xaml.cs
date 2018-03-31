@@ -6,6 +6,7 @@ using DungeonGenerator.Structure;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System;
+using DungeonGenerator.Settings;
 
 namespace DungeonGenerator
 {
@@ -15,10 +16,15 @@ namespace DungeonGenerator
     public partial class MainWindow : Window
     {
         private MapGenerator mapGenerator;
+        private GeneratorSettings settings = new GeneratorSettings();
 
         public MainWindow()
         {
             InitializeComponent();
+            RoomSliderTextBox.Text = settings.QuantityOfRooms.ToString();
+            MapSliderTextBox.Text = settings.MapHeight.ToString();
+            SizeSlider.Value = settings.MapHeight;
+            RoomsSlider.Value = settings.QuantityOfRooms;
         }
 
         private void Generate_Click(object sender, RoutedEventArgs e)
@@ -26,10 +32,10 @@ namespace DungeonGenerator
             Regions.Reset();
             int size = (int)SizeSlider.Value;
             this.canvas.Children.Clear();
-            mapGenerator = new MapGenerator(new Structure.Size(size, size));
+            mapGenerator = new MapGenerator(settings);
             mapGenerator.SetRoomCount((int)RoomsSlider.Value);
 
-            if (byStepsCheckBox.IsChecked ?? false)
+            if (settings.StepByStepGeneration)
             {
                 NextStepButton_Copy.IsEnabled = true;
                 byStepsCheckBox.IsEnabled = false;
@@ -43,6 +49,8 @@ namespace DungeonGenerator
 
             mapGenerator.DrawMap(this.canvas, showRegionsCheckBox.IsChecked ?? false);
         }
+
+        
 
         private void NextStep_Click(object sender, RoutedEventArgs e)
         {
@@ -112,6 +120,7 @@ namespace DungeonGenerator
             if (this.RoomSliderTextBox != null)
             {
                 this.RoomSliderTextBox.Text = e.NewValue.ToString();
+                settings.QuantityOfRooms = (int)e.NewValue;
             }
         }
 
@@ -120,7 +129,21 @@ namespace DungeonGenerator
             if (this.MapSliderTextBox != null)
             {
                 this.MapSliderTextBox.Text = e.NewValue.ToString();
+                settings.MapHeight = (int)e.NewValue;
+                settings.MapWidth = (int)e.NewValue;
             }
+        }
+
+        private void OpenSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow sw = new SettingsWindow(settings);
+            sw.ShowDialog();
+            byStepsCheckBox.IsChecked = settings.StepByStepGeneration;
+        }
+
+        private void StepByStepClick(object sender, RoutedEventArgs e)
+        {
+            settings.StepByStepGeneration = ((CheckBox)sender).IsChecked ?? false;
         }
     }
 }

@@ -9,9 +9,12 @@ namespace DungeonGenerator.Generator
     public class MapGenerator
     {
         private MapStructure map = new MapStructure();
+
         private int actualStep = 0;
         private int roomCount = 0;
         private bool isDone = false;
+
+        public GeneratorSettings Settings { get; set; }
         public bool ByStep { get; set; }
         public bool IsDone { get => isDone; }
 
@@ -23,9 +26,10 @@ namespace DungeonGenerator.Generator
             this.roomCount = roomCount;
         }
 
-        public MapGenerator(Size size)
+        public MapGenerator(GeneratorSettings settings)
         {
-            map.Size = size;
+            map.Size = new Size(settings.MapWidth, settings.MapHeight);
+            roomCount = settings.QuantityOfRooms;
             map.Map = new Tile[map.Size.Height, map.Size.Width];
             roomsGenerator = new RoomsGenerator(ref map);
             mazeGenerator = new MazeGenerator(ref map);

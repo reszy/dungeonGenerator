@@ -14,7 +14,7 @@
         <Canvas x:Name="heleprPanel" Margin="800,0,0,0" Background="Black" Initialized="InitHelperCanvas" HorizontalAlignment="Left" Width="56"></Canvas>
         <Button x:Name="GenerateButton" Content="Generate" Click="Generate_Click" Margin="10,10,0,0" HorizontalAlignment="Left" Width="161" Height="48" VerticalAlignment="Top"/>
         <CheckBox x:Name="showRegionsCheckBox" Content="Show regions" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Click="ChangeDisplaying_Click"/>
-        <CheckBox x:Name="byStepsCheckBox" Content="By steps" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <CheckBox x:Name="byStepsCheckBox" Content="By steps" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top" IsChecked="True" Click="StepByStepClick"/>
         <Label x:Name="MapSliderLabel" Content="Map size" HorizontalAlignment="Left" Height="25" Margin="10,136,0,0" VerticalAlignment="Top" Width="71"/>
         <Slider x:Name="SizeSlider" HorizontalAlignment="Left" Margin="10,158,0,0" VerticalAlignment="Top" Width="135" Value="40" Maximum="100" Minimum="10" SmallChange="2" LargeChange="10" AutoToolTipPlacement="TopLeft" Height="27" ValueChanged="SetMapSize" IsSnapToTickEnabled="True"/>
         <TextBox x:Name="MapSliderTextBox" HorizontalAlignment="Left" Height="23" Margin="145,158,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="35"/>
@@ -23,5 +23,6 @@
         <TextBox x:Name="RoomSliderTextBox" HorizontalAlignment="Left" Height="23" Margin="145,200,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="35"/>
         <Button x:Name="NextStepButton_Copy" Content="Next step" Margin="10,63,0,0" HorizontalAlignment="Left" Width="161" Height="24" VerticalAlignment="Top" IsEnabled="False" Click="NextStep_Click"/>
         <TextBlock x:Name="coordsLabel" HorizontalAlignment="Left" Margin="10,470,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="186" Width="161" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" IsEnabled="False"/>
+        <Button x:Name="OpenSettingsButton" Content="Open settings" Margin="0,255,676,0" VerticalAlignment="Top" Click="OpenSettingsButton_Click" HorizontalAlignment="Right" Width="165"/>
     </Grid>
 </Window>
