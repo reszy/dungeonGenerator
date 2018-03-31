@@ -27,6 +27,7 @@ namespace DungeonGenerator.Generator
             CreateRoom(new Position(10, 4), new Size(7, 4));
 
             MergeRegions();
+            SquashRegions();
         }
 
         private Position getRoomRandomCoords(Size size)
@@ -54,6 +55,26 @@ namespace DungeonGenerator.Generator
                 CreateRoom(getRoomRandomCoords(size), size, true);
             }
             MergeRegions();
+            SquashRegions();
+        }
+
+        private void SquashRegions()
+        {
+            SortedDictionary<int, int> regionIds = new SortedDictionary<int, int>();
+            Regions.Reset();
+            foreach (var room in map.Rooms)
+            {
+                if (regionIds.TryGetValue(room.RegionId, out int value))
+                {
+                    ChangeRoomRegion(room, value);
+                }
+                else
+                {
+                    int newRegionId = Regions.Instance.GetNewRegion();
+                    regionIds.Add(room.RegionId, newRegionId);
+                    ChangeRoomRegion(room, newRegionId);
+                }
+            }
         }
 
         private int PutOnMap(int x, int y, TileType type, int roomId)
