@@ -5,20 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DungeonGenerator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="800" Background="#FF572B2B" MinWidth="800" MinHeight="620">
+        Title="MainWindow" Height="697" Width="864" Background="#FF572B2B" MinWidth="800" MinHeight="620">
 
     <Grid>
-        <Canvas x:Name="canvas" Margin="185,0,0,0" Background="Black" MouseMove="MoveOverCanvas">
+        <Canvas x:Name="canvas" Margin="185,0,64,0" Background="Black" MouseMove="MoveOverCanvas">
 
         </Canvas>
+        <Canvas x:Name="heleprPanel" Margin="800,0,0,0" Background="Black" Initialized="InitHelperCanvas" HorizontalAlignment="Left" Width="56"></Canvas>
         <Button x:Name="GenerateButton" Content="Generate" Click="Generate_Click" Margin="10,10,0,0" HorizontalAlignment="Left" Width="161" Height="48" VerticalAlignment="Top"/>
-        <Slider x:Name="SizeSlider" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top" Width="161" Value="40" Maximum="100" Minimum="10" SmallChange="2" LargeChange="10" AutoToolTipPlacement="TopLeft"/>
-        <Button x:Name="showColors" Content="Show colors" HorizontalAlignment="Left" Margin="0,539,0,0" VerticalAlignment="Top" Width="75" Click="ShowColors_Click"/>
         <CheckBox x:Name="showRegionsCheckBox" Content="Show regions" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Click="ChangeDisplaying_Click"/>
-        <Slider x:Name="RoomsSlider" HorizontalAlignment="Left" Margin="10,182,0,0" VerticalAlignment="Top" Width="161" Value="10" Maximum="40" Minimum="1" SmallChange="1" LargeChange="4" AutoToolTipPlacement="TopLeft"/>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="43" Margin="10,491,0,0" Stroke="Black" VerticalAlignment="Top" Width="161"/>
-        <Label x:Name="coordsLabel" Content="Label" HorizontalAlignment="Left" Margin="10,491,0,0" VerticalAlignment="Top" Width="161" Height="43"/>
-        <Button x:Name="NextStepButton_Copy" Content="Next step" Margin="10,63,0,0" HorizontalAlignment="Left" Width="161" Height="24" VerticalAlignment="Top" IsEnabled="False" Click="NextStep_Click"/>
         <CheckBox x:Name="byStepsCheckBox" Content="By steps" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <Label x:Name="MapSliderLabel" Content="Map size" HorizontalAlignment="Left" Height="25" Margin="10,136,0,0" VerticalAlignment="Top" Width="71"/>
+        <Slider x:Name="SizeSlider" HorizontalAlignment="Left" Margin="10,158,0,0" VerticalAlignment="Top" Width="135" Value="40" Maximum="100" Minimum="10" SmallChange="2" LargeChange="10" AutoToolTipPlacement="TopLeft" Height="27" ValueChanged="SetMapSize" IsSnapToTickEnabled="True"/>
+        <TextBox x:Name="MapSliderTextBox" HorizontalAlignment="Left" Height="23" Margin="145,158,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="35"/>
+        <Label x:Name="RoomSliderLabel" Content="Room count" HorizontalAlignment="Left" Height="25" Margin="10,180,0,0" VerticalAlignment="Top" Width="80"/>
+        <Slider x:Name="RoomsSlider" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Width="135" Value="10" Maximum="40" Minimum="1" SmallChange="1" LargeChange="4" AutoToolTipPlacement="TopLeft" ValueChanged="SetRoomCount" IsSnapToTickEnabled="True" TickPlacement="BottomRight"/>
+        <TextBox x:Name="RoomSliderTextBox" HorizontalAlignment="Left" Height="23" Margin="145,200,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="35"/>
+        <Button x:Name="NextStepButton_Copy" Content="Next step" Margin="10,63,0,0" HorizontalAlignment="Left" Width="161" Height="24" VerticalAlignment="Top" IsEnabled="False" Click="NextStep_Click"/>
+        <TextBlock x:Name="coordsLabel" HorizontalAlignment="Left" Margin="10,470,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="186" Width="161" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" IsEnabled="False"/>
     </Grid>
 </Window>

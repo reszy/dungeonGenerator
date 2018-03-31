@@ -28,8 +28,8 @@ namespace DungeonGenerator
             this.canvas.Children.Clear();
             mapGenerator = new MapGenerator(new Structure.Size(size, size));
             mapGenerator.SetRoomCount((int)RoomsSlider.Value);
-            
-            if(byStepsCheckBox.IsChecked ?? false)
+
+            if (byStepsCheckBox.IsChecked ?? false)
             {
                 NextStepButton_Copy.IsEnabled = true;
                 byStepsCheckBox.IsEnabled = false;
@@ -57,26 +57,6 @@ namespace DungeonGenerator
             }
         }
 
-        
-
-        private void ShowColors_Click(object sender, RoutedEventArgs e)
-        {
-            this.canvas.Children.Clear();
-            for (int i = 0; i < 20; i++)
-            {
-                Color color = Regions.Instance.GetColor(i);
-                Rectangle square = new Rectangle()
-                {
-                    Width = 50,
-                    Height = 20,
-                    Fill = new SolidColorBrush(color)
-                };
-                Canvas.SetLeft(square, 20);
-                Canvas.SetTop(square, i * square.Height);
-                this.canvas.Children.Add(square);
-            }
-        }
-
         private void ChangeDisplaying_Click(object sender, RoutedEventArgs e)
         {
             foreach (var child in this.canvas.Children)
@@ -93,15 +73,53 @@ namespace DungeonGenerator
         {
             Point p = Mouse.GetPosition(canvas);
             Position pos = new Position((int)p.X / 15, (int)p.Y / 15);
-            coordsLabel.Content = "X: " + pos.X + ", Y:" + pos.Y;
+            coordsLabel.Text = "X: " + pos.X + ", Y:" + pos.Y;
 
             if (mapGenerator != null)
             {
                 Tile tile = mapGenerator.GetTile(pos.X, pos.Y);
                 if (tile != null)
                 {
-                    coordsLabel.Content += "\n" + tile.Id;
+                    coordsLabel.Text += "\nid:" + tile.Id +
+                                        "\ntype: " + tile.Type +
+                                        "\nREGION:" +
+                                        "\nid:" + tile.RegionId +
+                                        "\nParent:" + tile.RegionParentId +
+                                        "\nType: " + tile.RegionType;
                 }
+            }
+        }
+
+        private void InitHelperCanvas(object sender, EventArgs e)
+        {
+            this.heleprPanel.Children.Clear();
+            for (int i = 0; i < 20; i++)
+            {
+                Color color = Regions.Instance.GetColor(i);
+                Rectangle square = new Rectangle()
+                {
+                    Width = 50,
+                    Height = 20,
+                    Fill = new SolidColorBrush(color)
+                };
+                Canvas.SetTop(square, i * square.Height);
+                this.heleprPanel.Children.Add(square);
+            }
+        }
+
+        private void SetRoomCount(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (this.RoomSliderTextBox != null)
+            {
+                this.RoomSliderTextBox.Text = e.NewValue.ToString();
+            }
+        }
+
+        private void SetMapSize(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (this.MapSliderTextBox != null)
+            {
+                this.MapSliderTextBox.Text = e.NewValue.ToString();
             }
         }
     }
