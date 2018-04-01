@@ -20,8 +20,24 @@ namespace DungeonGenerator.Structure
             MapWidth = 41;
             SaveStateBeforeGarbageClean = false;
             StepByStepGeneration = false;
+            MazeSettings = new MazeSettings();
         }
 
+        public bool AllowDoubleDoors { get; set; }
+        public bool AllowToMergeRooms { get; set; }
+        public int QuantityOfRooms { get; set; }
+        public int RoomMaxSize { get; set; }
+        public int RoomMinSize { get; set; }
+        public int MapWidth { get; set; }
+        public int MapHeight { get; set; }
+        public MazeSettings MazeSettings { get; set; }
+
+        //DEBUG SETTING
+        public bool SaveStateBeforeGarbageClean { get; set; }
+        public bool StepByStepGeneration { get; set; }
+
+
+        //Derived from ISettings
         public ISettings GetClone()
         {
             return (GeneratorSettings)this.MemberwiseClone();
@@ -45,17 +61,5 @@ namespace DungeonGenerator.Structure
                 throw new InvalidCastException("Type must be of " + typeof(GeneratorSettings).ToString() + " instead of " + settings.GetType());
             }
         }
-
-        public bool AllowDoubleDoors { get; set; }
-        public bool AllowToMergeRooms { get; set; }
-        public int QuantityOfRooms { get; set; }
-        public int RoomMaxSize { get; set; }
-        public int RoomMinSize { get; set; }
-        public int MapWidth { get; set; }
-        public int MapHeight { get; set; }
-
-        //DEBUG SETTING
-        public bool SaveStateBeforeGarbageClean { get; set; }
-        public bool StepByStepGeneration { get; set; }
     }
 }

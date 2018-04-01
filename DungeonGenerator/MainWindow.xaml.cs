@@ -18,6 +18,10 @@ namespace DungeonGenerator
         private MapGenerator mapGenerator;
         private GeneratorSettings settings = new GeneratorSettings();
 
+        private Brush bgBrush = new SolidColorBrush(Color.FromRgb(45, 45, 50));
+        private Brush innerBgBrush = new SolidColorBrush(Color.FromRgb(75, 75, 70));
+        private Brush fontBrush = new SolidColorBrush(Color.FromRgb(220, 220, 220));
+
         public MainWindow()
         {
             InitializeComponent();
@@ -25,6 +29,7 @@ namespace DungeonGenerator
             MapSliderTextBox.Text = settings.MapHeight.ToString();
             SizeSlider.Value = settings.MapHeight;
             RoomsSlider.Value = settings.QuantityOfRooms;
+            scrollViewer.CanContentScroll = false;
         }
 
         private void Generate_Click(object sender, RoutedEventArgs e)
@@ -34,6 +39,8 @@ namespace DungeonGenerator
             this.canvas.Children.Clear();
             mapGenerator = new MapGenerator(settings);
             mapGenerator.SetRoomCount((int)RoomsSlider.Value);
+            canvas.Height = settings.MapHeight * 15;
+            canvas.Width = settings.MapWidth * 15;
 
             if (settings.StepByStepGeneration)
             {
