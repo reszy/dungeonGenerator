@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -15,8 +16,10 @@ namespace DungeonGenerator.Settings
         ISettings refSettings;
         PropertyInfo[] properties;
         ISettings localSettings;
+        private Brush bgBrush = new SolidColorBrush(Color.FromRgb(45,45,50));
+        private Brush fontBrush = new SolidColorBrush(Color.FromRgb(220,220,220));
 
-        const string NAME_PREFIX = "ValueOf_";
+        private const string NAME_PREFIX = "ValueOf_";
 
         public SettingsWindow(ISettings settings)
         {
@@ -24,7 +27,7 @@ namespace DungeonGenerator.Settings
 
             Grid grid = new Grid()
             {
-                Background = new SolidColorBrush(Colors.DarkKhaki)
+                Background = bgBrush
             };
             this.Content = grid;
 
@@ -41,7 +44,7 @@ namespace DungeonGenerator.Settings
                 {
                     int verticalPosition = offset * listedProperties + 15;
 
-                    string labelContent = ConvertToHumanReadable(property.Name);
+                    string labelContent = TextUtils.ConvertToHumanReadable(property.Name);
                     grid.Children.Add(new Label
                     {
                         Content = labelContent,
@@ -50,38 +53,13 @@ namespace DungeonGenerator.Settings
                         Width = 230,
                         Height = offset,
                         Margin = new Thickness(20, verticalPosition, 0, 20),
-                        Visibility = Visibility.Visible
+                        Visibility = Visibility.Visible,
+                        Foreground = fontBrush
                     });
                     Thickness valueThickness = new Thickness(250, verticalPosition, 20, 20);
                     string valueName = NAME_PREFIX + property.Name;
-                    if (property.PropertyType == typeof(bool))
-                    {
-                        grid.Children.Add(new CheckBox
-                        {
-                            Name = valueName,
-                            IsChecked = (bool)property.GetValue(localSettings),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            Margin = valueThickness,
-                            Width = 20,
-                            Height = 20,
-                            Visibility = Visibility.Visible
-                        });
-                    }
-                    else
-                    {
-                        grid.Children.Add(new TextBox
-                        {
-                            Name = valueName,
-                            Text = property.GetValue(localSettings).ToString(),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            Width = 150,
-                            Height = 20,
-                            Margin = valueThickness,
-                            Visibility = Visibility.Visible
-                        });
-                    }
+                    dynamic value = property.GetValue(localSettings);
+                    grid.Children.Add(GenerateControl(value, valueThickness, valueName));
                     listedProperties++;
                 }
             }
@@ -117,11 +95,6 @@ namespace DungeonGenerator.Settings
             grid.Children.Add(cancelButton);
         }
 
-        private string ConvertToHumanReadable(string input)
-        {
-            return string.Concat(input.Select((x, i) => i > 0 && char.IsUpper(x) ? " " + char.ToLower(x).ToString() : x.ToString()));
-        }
-
         private void SetSettings()
         {
             foreach (var item in ((Grid)this.Content).Children)
@@ -130,14 +103,86 @@ namespace DungeonGenerator.Settings
                 if (control.Name.StartsWith(NAME_PREFIX))
                 {
                     string propertyName = control.Name.Substring(NAME_PREFIX.Length);
+                    var property = properties.First(p => p.Name == propertyName);
                     if (control.GetType() == typeof(CheckBox))
                     {
-                        var property = properties.First(p => p.Name == propertyName);
                         property.SetValue(localSettings, ((CheckBox)control).IsChecked);
+                    }
+                    if (control.GetType() == typeof(ComboBox))
+                    {
+                        property.SetValue(localSettings, Enum.Parse(property.PropertyType, TextUtils.ConvertFromHumanReadable(((ComboBox)control).Text)));
                     }
                 }
             }
             refSettings.SetSettings(localSettings);
+        }
+
+        private Control GenerateControl(bool value, Thickness valueThickness, string name)
+        {
+            return new CheckBox
+            {
+                Name = name,
+                IsChecked = value,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = valueThickness,
+                Width = 20,
+                Height = 20,
+                Visibility = Visibility.Visible
+            };
+        }
+
+        private Control GenerateControl(int value, Thickness valueThickness, string name)
+        {
+            return new TextBox
+            {
+                Name = name,
+                Text = value.ToString(),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Width = 150,
+                Height = 20,
+                Margin = valueThickness,
+                Visibility = Visibility.Visible
+            };
+        }
+
+        private Control GenerateControl(ISettings value, Thickness valueThickness, string name)
+        {
+            var button = new Button()
+            {
+                Content = "Open settings",
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Height = 25,
+                Margin = valueThickness,
+            };
+            button.Click += (sender, e) =>
+            {
+                var settingsDialog = new SettingsWindow(value);
+                settingsDialog.ShowDialog();
+            };
+            return button;
+        }
+
+        private Control GenerateControl(Enum value, Thickness valueThickness, string name)
+        {
+            var comboBox = new ComboBox
+            {
+                Name = name,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Width = 150,
+                Height = 24,
+                Margin = valueThickness,
+                Visibility = Visibility.Visible
+            };
+            foreach (var enumName in Enum.GetNames(value.GetType()))
+            {
+                comboBox.Items.Add(TextUtils.ConvertToHumanReadable(enumName));
+            }
+            comboBox.SelectedItem = TextUtils.ConvertToHumanReadable(value.ToString());
+            return comboBox;
         }
     }
 }
