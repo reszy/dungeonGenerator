@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGenerator", "DungeonGenerator\DungeonGenerator.csproj", "{ABA095E8-AD22-428F-8DD5-F63BE2E96FA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGeneratorTests1", "DungeonGeneratorTests1\DungeonGeneratorTests1.csproj", "{9020254A-2360-4243-AD09-DDF6CA5C70D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ABA095E8-AD22-428F-8DD5-F63BE2E96FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABA095E8-AD22-428F-8DD5-F63BE2E96FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABA095E8-AD22-428F-8DD5-F63BE2E96FA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9020254A-2360-4243-AD09-DDF6CA5C70D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9020254A-2360-4243-AD09-DDF6CA5C70D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9020254A-2360-4243-AD09-DDF6CA5C70D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9020254A-2360-4243-AD09-DDF6CA5C70D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

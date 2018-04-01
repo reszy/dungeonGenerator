@@ -79,8 +79,11 @@
     <Compile Include="Settings\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\TextUtils.cs" />
     <Compile Include="Structure\GeneratorSettings.cs" />
     <Compile Include="Structure\MapStructure.cs" />
+    <Compile Include="Structure\MazeEngine.cs" />
+    <Compile Include="Structure\MazeSettings.cs" />
     <Compile Include="Structure\Position.cs" />
     <Compile Include="Structure\Regions.cs" />
     <Compile Include="Structure\RegionType.cs" />
@@ -137,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomControls\" />
+    <Folder Include="Generator\MazeEngine\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
