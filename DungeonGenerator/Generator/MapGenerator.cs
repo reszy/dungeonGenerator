@@ -30,7 +30,7 @@ namespace DungeonGenerator.Generator
         {
             map.Size = new Size(settings.MapWidth, settings.MapHeight);
             roomCount = settings.QuantityOfRooms;
-            map.Map = new Tile[map.Size.Height, map.Size.Width];
+            map.Map = new Tile[map.Size.Width, map.Size.Height];
             roomsGenerator = new RoomsGenerator(ref map);
             mazeGenerator = new MazeGenerator(ref map);
         }
