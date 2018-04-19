@@ -118,6 +118,7 @@ namespace DungeonGenerator
                     Fill = new SolidColorBrush(color)
                 };
                 Canvas.SetTop(square, i * square.Height);
+                Canvas.SetLeft(square, 3);
                 this.heleprPanel.Children.Add(square);
             }
         }

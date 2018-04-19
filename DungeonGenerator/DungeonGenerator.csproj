@@ -76,6 +76,7 @@
     <Compile Include="Generator\EnvironmentGenerator.cs" />
     <Compile Include="Generator\LootGenerator.cs" />
     <Compile Include="Settings\ISettings.cs" />
+    <Compile Include="Settings\SettingAttribute.cs" />
     <Compile Include="Settings\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>

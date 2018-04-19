@@ -16,8 +16,10 @@ namespace DungeonGenerator.Settings
         ISettings refSettings;
         PropertyInfo[] properties;
         ISettings localSettings;
-        private Brush bgBrush = new SolidColorBrush(Color.FromRgb(45,45,50));
-        private Brush fontBrush = new SolidColorBrush(Color.FromRgb(220,220,220));
+        private Brush bgBrush = new SolidColorBrush(Color.FromRgb(45, 45, 50));
+        private Brush fontBrush = new SolidColorBrush(Color.FromRgb(220, 220, 220));
+        private Brush validBgBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private Brush invalidBgBrush = new SolidColorBrush(Color.FromRgb(220, 110, 110));
 
         private const string NAME_PREFIX = "ValueOf_";
 
@@ -59,7 +61,8 @@ namespace DungeonGenerator.Settings
                     Thickness valueThickness = new Thickness(250, verticalPosition, 20, 20);
                     string valueName = NAME_PREFIX + property.Name;
                     dynamic value = property.GetValue(localSettings);
-                    grid.Children.Add(GenerateControl(value, valueThickness, valueName));
+                    dynamic field = property.GetCustomAttribute(typeof(SettingAttribute));
+                    grid.Children.Add(GenerateControl(value, valueThickness, valueName, field));
                     listedProperties++;
                 }
             }
@@ -104,11 +107,25 @@ namespace DungeonGenerator.Settings
                 {
                     string propertyName = control.Name.Substring(NAME_PREFIX.Length);
                     var property = properties.First(p => p.Name == propertyName);
-                    if (control.GetType() == typeof(CheckBox))
+                    if (property.GetCustomAttribute(typeof(SettingAttribute)) is SettingAttribute attr)
+                    {
+                        bool next = false;
+                        if (control is TextBox)
+                        {
+                            if (!attr.IsValid(Int32.Parse((control as TextBox).Text)))
+                                next = true;
+                        }
+                        if (next) continue;
+                    }
+                    if (control is TextBox)
+                    {
+                        property.SetValue(localSettings, Int32.Parse((control as TextBox).Text));
+                    }
+                    if (control is CheckBox)
                     {
                         property.SetValue(localSettings, ((CheckBox)control).IsChecked);
                     }
-                    if (control.GetType() == typeof(ComboBox))
+                    if (control is ComboBox)
                     {
                         property.SetValue(localSettings, Enum.Parse(property.PropertyType, TextUtils.ConvertFromHumanReadable(((ComboBox)control).Text)));
                     }
@@ -117,7 +134,7 @@ namespace DungeonGenerator.Settings
             refSettings.SetSettings(localSettings);
         }
 
-        private Control GenerateControl(bool value, Thickness valueThickness, string name)
+        private Control GenerateControl(bool value, Thickness valueThickness, string name, Object o)
         {
             return new CheckBox
             {
@@ -132,9 +149,9 @@ namespace DungeonGenerator.Settings
             };
         }
 
-        private Control GenerateControl(int value, Thickness valueThickness, string name)
+        private Control GenerateControl(int value, Thickness valueThickness, string name, Object o)
         {
-            return new TextBox
+            var textBox = new TextBox
             {
                 Name = name,
                 Text = value.ToString(),
@@ -145,9 +162,29 @@ namespace DungeonGenerator.Settings
                 Margin = valueThickness,
                 Visibility = Visibility.Visible
             };
+            if (o != null && o is SettingAttribute)
+            {
+                textBox.LostFocus += (sender, e) =>
+                {
+                    var tb = (TextBox)sender;
+                    var attr = (SettingAttribute)o;
+                    int output;
+                    if (attr.IsValid(output = Int32.Parse(textBox.Text)))
+                    {
+                        tb.Text = output.ToString();
+                        tb.Background = validBgBrush;
+                    }
+                    else
+                    {
+                        tb.Background = invalidBgBrush;
+                        MessageBox.Show("Wrong value. Please enter value between " + attr.MinValue + " and " + attr.MaxValue);
+                    }
+                };
+            }
+            return textBox;
         }
 
-        private Control GenerateControl(ISettings value, Thickness valueThickness, string name)
+        private Control GenerateControl(ISettings value, Thickness valueThickness, string name, Object o)
         {
             var button = new Button()
             {
@@ -165,7 +202,7 @@ namespace DungeonGenerator.Settings
             return button;
         }
 
-        private Control GenerateControl(Enum value, Thickness valueThickness, string name)
+        private Control GenerateControl(Enum value, Thickness valueThickness, string name, Object o)
         {
             var comboBox = new ComboBox
             {

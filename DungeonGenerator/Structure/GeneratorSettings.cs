@@ -24,12 +24,22 @@ namespace DungeonGenerator.Structure
         }
 
         public bool AllowDoubleDoors { get; set; }
+
         public bool AllowToMergeRooms { get; set; }
+
+        [SettingAttribute(MaxValue = 30, MinValue = 2)]
         public int QuantityOfRooms { get; set; }
+
+        [Setting(MaxValue = 12, MinValue = 3)]
         public int RoomMaxSize { get; set; }
+
+        [Setting(MaxValue = 12, MinValue = 3)]
         public int RoomMinSize { get; set; }
+
         public int MapWidth { get; set; }
+
         public int MapHeight { get; set; }
+
         public MazeSettings MazeSettings { get; set; }
 
         //DEBUG SETTING
